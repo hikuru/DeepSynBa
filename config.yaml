@@ -1,0 +1,75 @@
+tag: 'deepsynba_model_new_drug_combination'
+model_params:
+  gene_channel: 64
+  emb_size: 512
+  gene_dim: 976
+  drug_dim: 768
+  apply_final_activation:
+    e1_mean: 'sigmoid' # in [0,1] # True
+    e2_mean: 'sigmoid' # in [0,1] # True
+    e3_mean: 'sigmoid' # in [0,1] # True
+    logC1_mean: 'none' # in [-32.30, -1.64]
+    logC2_mean: 'none' # in [-31.92, -1.10]
+    h1_mean: 'relu' # in [0.05, 13.18]
+    h2_mean: 'relu' # in [0.14, 11.92]
+    sigma_mean: 'relu' # in [0.00, 71.71]
+    alpha_mean: 'relu' # in [0.01, 100] 25k in reality
+    loewe: 'none' # no bounds
+    bliss: 'none' # no bounds
+    #dHSA_mean: False # in [-50, 50] [-99, 98] in reality
+
+optimizer:
+  name: AdamW
+  lr: 1.0e-4
+  weight_decay: 1.0e-5
+  
+scheduler:
+  name: LinearLR
+  start_factor: 1.0
+  end_factor: 0.5
+  total_iters: 30
+
+trainer_params:
+  batch_size: 128
+  num_workers: 7
+  max_epochs: 500
+  precision: 32
+  gpus: [0,1,6,7] #[0,1,5,6]
+  # Multi-GPU related settings
+  accelerator: gpu
+  strategy: ddp_find_unused_parameters_true
+  grad_norm_clip: 5
+  logging_interval: 100
+
+trainer_args:
+  # Arguments
+  synba: True
+  logger: 'wandb'
+  data_dir: "/NCI_Almanac_synergy"  # Directory for the dataset
+  synergy_file: '/NCI_Almanac_synergy/nci_synergy_new_unit_splitted_bliss_filtered_notz.csv'  # Path to the synergy file
+  gene_exp_file: '/NCI_Almanac_synergy/features/NCI-60_landmark_gex.csv'  # Path to the gene expression file
+  drug_smile_file: '/NCI_Almanac_synergy/features/NCI-ALMANAC_drug_molformer_embeddings.pt'  # Path to the drug smile file
+  dose_response_file: '/NCI_Almanac_synergy/nci_synergy_new_unit_splitted_bliss_filtered_non_zero_notz.pickle'
+  config_path: "config.yaml"  # Path to the configuration file
+  save_dir: '/synergy_experiments_wandb'
+  logger_dir: "deepsynba_model_new_comb/"
+  save_top_k: 1  # Number of checkpoints to be saved during the training
+  target_keys: ['e1_mean','e2_mean','e3_mean','logC1_mean','logC2_mean',
+                'h1_mean','h2_mean','sigma_mean', 'alpha_mean']
+
+  predict_matrix: False
+  eval_metrics: ['mse']
+  weight_multiplier:
+    e1_mean: 1.0
+    e2_mean: 1.0
+    e3_mean: 1.0
+    logC1_mean: 30.0
+    logC2_mean: 30.0
+    h1_mean: 10.0
+    h2_mean: 10.0
+    sigma_mean: 50.0
+    alpha_mean: 100.0
+    dHSA_mean: 1.0
+    loewe: 1.0
+    bliss: 1.0
+  num_workers: 8
