@@ -122,6 +122,9 @@ Table 1 shows the performance comparison of DeepSynBa with the state-of-the-art 
 </tr> 
 </table>
 
+## References
+- **[Ross et al., 2022]** Ross, Jerret, et al. "Large-scale chemical language representations capture molecular structure and properties." Nature Machine Intelligence 4.12 (2022): 1256-1264.
+- **[Zhang et al., 2023]** Zhang, Haoting, et al. "SynBa: improved estimation of drug combination synergies with uncertainty quantification." Bioinformatics 39.Supplement_1 (2023): i121-i130.
 
 ## License
 
