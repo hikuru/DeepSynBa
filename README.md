@@ -86,7 +86,11 @@ The intermediate dose-response parameter layer allows for separating efficacy fr
 which informs the selection of dosage ranges that optimise efficacy while limiting off-target toxicity in experimental screens. 
 The predictive capability and the downstream actionability make DeepSynBa a powerful tool for 
 advancing drug combination research beyond the limitations of the current approaches. 
-Table 1 shows the performance comparison of DeepSynBa with the state-of-the-art methods on the NCI-ALMANAC dataset. The results demonstrate that DeepSynBa outperforms the existing methods in predicting the dose-response matrix and synergy scores across multiple evaluation scenarios. The model achieves superior performance in terms of the mean squared error (MSE) and Pearson correlation coefficient (PCC) for the dose-response matrix prediction task and the synergy score prediction task. The results indicate that DeepSynBa can accurately predict the effects of drug combinations on cell lines and provide actionable insights for drug combination research.
+Table 1 shows the performance comparison of DeepSynBa with the state-of-the-art methods on the NCI-ALMANAC dataset. 
+The results demonstrate that DeepSynBa outperforms the existing methods in predicting the dose-response matrix and synergy scores across multiple evaluation scenarios. 
+The model achieves superior performance in terms of the root mean squared error (RMSE), Pearson and Spearman correlation coefficients 
+for the dose-response matrix prediction task and the synergy score prediction task. 
+The results indicate that DeepSynBa can accurately predict the effects of drug combinations on cell lines and provide actionable insights for drug combination research.
 
 #### Table 1: Performance comparison of DeepSynBa with the state-of-the-art methods on the NCI-ALMANAC dataset
 
