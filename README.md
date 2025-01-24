@@ -21,9 +21,9 @@ and the downstream actionability make DeepSynBa a powerful tool for advancing dr
 limitations of the current approaches
 
 ---
-## DeepSynba Architecture
+## DeepSynBa Architecture
 ![teaser](figures/Fig_1.jpg)
-DeepSynBA is designed to predict the effects of drug combinations on cell 
+DeepSynBa is designed to predict the effects of drug combinations on cell 
 lines by incorporating both drug and cell line features. Each drug combination consists of two drugs applied to a single cell
 line, and the model includes two dedicated drug-cell encoder sub-networks. Each encoder focuses on fusing the properties
 of one drug with the gene expression profiles of the cell line, enabling a detailed capture of interactions between the drugs
