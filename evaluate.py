@@ -85,21 +85,10 @@ def evaluate_model(checkpoint_path=None, save_output = False):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Evaluate a model for Synba Parpwdameter Prediction.")
+    parser = argparse.ArgumentParser(description="Evaluate a model for dose response prediction.")
     parser.add_argument('--checkpoint_path', type=str, default=None,
                         help='Path to the checkpoint file')
 
     args = parser.parse_args()
     checkpoint_path = args.checkpoint_path
-    if args.checkpoint_path is None:
-
-        ROOT_PATH = '/mnt/hikuru_backup/synergy_experiments_wandb_notz/synba_notz_bias_model/2024_08_23_at_0520_synba_notz_bias_model'
-
-        for subdir, dirs, files in os.walk(ROOT_PATH):
-            for file in files:
-                if file.endswith(".pth"):
-                    checkpoint_path = os.path.join(subdir, file)
-                    evaluate_model(checkpoint_path)
-
-    else:
-        evaluate_model(checkpoint_path)
+    evaluate_model(checkpoint_path)

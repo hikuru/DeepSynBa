@@ -41,10 +41,9 @@ def train_model(config=None, date_time=None):
 
     # Prepare the model checkpoints
     checkpoint_callback = ModelCheckpoint(
-        monitor='val/dose_response_loss', # TODO: this monitoring keyword will be updated
+        monitor='val/dose_response_loss',
         mode='min',
         filename='{epoch:02d}-{val_loss_dose_response:.2f}',
-        #filename='{epoch:02d}-{val_loss_all_response:.2f}',
         save_top_k=config["trainer_args"]["save_top_k"],
     )
     checkpoint_callback.FILE_EXTENSION = ".pth"
@@ -53,7 +52,7 @@ def train_model(config=None, date_time=None):
     model = TrainingModule(config=config)
 
     if config["trainer_args"]["logger"] == 'wandb':
-        logger = pl_loggers.WandbLogger(dir='/mnt/hikuru_backup/wandb_dir',
+        logger = pl_loggers.WandbLogger(dir='/wandb_dir',
                                         entity='synba-team',
                                         project=config["tag"],
                                         name=config["tag"],
@@ -64,7 +63,7 @@ def train_model(config=None, date_time=None):
         logger = pl_loggers.TensorBoardLogger(save_dir=config["trainer_args"]["save_dir"],
                                               name=date_time + '_' + config["tag"])
 
-    gpus = [gpu_mapping[i] for i in config["trainer_params"]["gpus"]]
+    gpus = config["trainer_params"]["gpus"]
     trainer = l.Trainer(devices=gpus,
                         accelerator=config["trainer_params"].get("accelerator", "auto"),
                         strategy=config["trainer_params"].get("strategy", "auto"),

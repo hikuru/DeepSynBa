@@ -8,10 +8,8 @@ import pickle
 
 class NciAlmanacDataset(Dataset):
     def __init__(self, synergy_file, gene_exp_file, drug_smile_file, dose_response_file, target_keys=None, split='train'):
-        self.dose_matrix_root = os.path.join('/mnt/hikuru_backup/NCI_Almanac_synergy', 'combinations_full_notz/')
         # get synergy data
         self.synergy_data = self.get_splitted_data(synergy_file, split)
-        self.loewe_bliss_gt = pd.read_csv('/mnt/hikuru_backup/NCI_Almanac_synergy/Loewe_Bliss_synergy_scores_ALL.csv')
         self.cell2gex = self.get_gene_expressions(gene_exp_file)
 
         self.drug2embedding = self.get_drug_embeddings(drug_smile_file)

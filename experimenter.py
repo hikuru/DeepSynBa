@@ -3,7 +3,7 @@ import yaml
 import time
 import os
 
-os.environ["WANDB_DIR"] = "/mnt/hikuru_backup/wandb_dir"
+os.environ["WANDB_DIR"] = "/wandb_dir"
 
 with open("config.yaml", 'r') as file:
     config = yaml.safe_load(file)

@@ -45,7 +45,7 @@ class DeepSynBa(nn.Module):
                 nn.init.constant_(param.data, 0)
 
 
-    def synba_2d_2(self, x_1, x_2, e_1, e_2, e_3, logC_1, logC_2, h_1, h_2, sigma, alpha, add_noise=False):
+    def synba_likelihood_2d(self, x_1, x_2, e_1, e_2, e_3, logC_1, logC_2, h_1, h_2, sigma, alpha, add_noise=False):
         e_0 = 100
         x_1, x_2 = x_1 + 1e-6, x_2 + 1e-6
         #x_1, x_2 = torch.tensor(x_1, device=e_1.device), torch.tensor(x_2, device=e_1.device)
@@ -74,6 +74,22 @@ class DeepSynBa(nn.Module):
 
         return y
 
+    def post_process(self, input, drug1_dose, drug2_dose):
+
+        y_ = self.synba_likelihood_2d(drug1_dose,
+                                      drug2_dose,
+                                      input['e1_mean'].unsqueeze(dim=2),
+                                      input['e2_mean'].unsqueeze(dim=2),
+                                      input['e3_mean'].unsqueeze(dim=2),
+                                      input['logC1_mean'].unsqueeze(dim=2),
+                                      input['logC2_mean'].unsqueeze(dim=2),
+                                      input['h1_mean'].unsqueeze(dim=2),
+                                      input['h2_mean'].unsqueeze(dim=2),
+                                      input['sigma_mean'].unsqueeze(dim=2),
+                                      input['alpha_mean'].unsqueeze(dim=2),
+                                      add_noise=False)
+
+        return y_
 
     def forward(self, drug1_smile, drug2_smile, gene_expr, drug1_dose, drug2_dose):
         # Apply drug encoder for smiles to get drug features

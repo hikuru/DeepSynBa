@@ -1,7 +1,7 @@
-tag: 'deepsynba_model_new_drug_combination'
+tag: 'deepsynba_model'
 model_params:
-  gene_channel: 64
-  emb_size: 512
+  gene_channel: 256
+  emb_size: 2048
   gene_dim: 976
   drug_dim: 768
   apply_final_activation:
@@ -14,9 +14,6 @@ model_params:
     h2_mean: 'relu' # in [0.14, 11.92]
     sigma_mean: 'relu' # in [0.00, 71.71]
     alpha_mean: 'relu' # in [0.01, 100] 25k in reality
-    loewe: 'none' # no bounds
-    bliss: 'none' # no bounds
-    #dHSA_mean: False # in [-50, 50] [-99, 98] in reality
 
 optimizer:
   name: AdamW
@@ -34,7 +31,7 @@ trainer_params:
   num_workers: 7
   max_epochs: 500
   precision: 32
-  gpus: [0,1,6,7] #[0,1,5,6]
+  gpus: [0] # if multi gpu, [0,1,2 ....]
   # Multi-GPU related settings
   accelerator: gpu
   strategy: ddp_find_unused_parameters_true
@@ -44,15 +41,15 @@ trainer_params:
 trainer_args:
   # Arguments
   synba: True
-  logger: 'wandb'
-  data_dir: "/NCI_Almanac_synergy"  # Directory for the dataset
-  synergy_file: '/NCI_Almanac_synergy/nci_synergy_new_unit_splitted_bliss_filtered_notz.csv'  # Path to the synergy file
-  gene_exp_file: '/NCI_Almanac_synergy/features/NCI-60_landmark_gex.csv'  # Path to the gene expression file
-  drug_smile_file: '/NCI_Almanac_synergy/features/NCI-ALMANAC_drug_molformer_embeddings.pt'  # Path to the drug smile file
-  dose_response_file: '/NCI_Almanac_synergy/nci_synergy_new_unit_splitted_bliss_filtered_non_zero_notz.pickle'
+  logger: 'wandb' # or 'tensorboard
+  data_dir: "/data"  # Directory for the dataset
+  synergy_file: '/data/nci_synergy_metadata.csv'  # Path to the synergy file
+  gene_exp_file: '/data/features/NCI-60_landmark_gex.csv'  # Path to the gene expression file
+  drug_smile_file: '/data/features/NCI-ALMANAC_drug_molformer_embeddings.pt'  # Path to the drug smile file
+  dose_response_file: '/data/nci_synergy_notz_dose_response.pickle'
   config_path: "config.yaml"  # Path to the configuration file
   save_dir: '/synergy_experiments_wandb'
-  logger_dir: "deepsynba_model_new_comb/"
+  logger_dir: "deepsynba_model/"
   save_top_k: 1  # Number of checkpoints to be saved during the training
   target_keys: ['e1_mean','e2_mean','e3_mean','logC1_mean','logC2_mean',
                 'h1_mean','h2_mean','sigma_mean', 'alpha_mean']
