@@ -11,6 +11,19 @@ file_path = 'case_study.json'
 with open(file_path, 'r') as file:
     data = json.load(file)
 
+# The function to calculate intermediate variables
+def synba_2d(X1, X2):
+    A = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2) * e_0
+    B = (X1 ** h_1) * (np.exp(logC_2) ** h_2) * e_1 * e_0
+    C = (X2 ** h_2) * (np.exp(logC_1) ** h_1) * e_2 * e_0
+    D = alpha * (X1 ** h_1) * (X2 ** h_2) * e_3 * e_0
+    AA = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2)
+    BB = (X1 ** h_1) * (np.exp(logC_2) ** h_2)
+    CC = (X2 ** h_2) * (np.exp(logC_1) ** h_1)
+    DD = alpha * (X1 ** h_1) * (X2 ** h_2)
+    Y = (A + B + C + D) / (AA + BB + CC + DD)
+    return Y
+
 
 ### Case Study 1
 cell_name = "786-0"
@@ -47,8 +60,6 @@ logC_2 = extracted_values.get('logC2_mean')
 h_1 = extracted_values.get('h1_mean')
 h_2 = extracted_values.get('h2_mean')
 alpha = extracted_values.get('alpha_mean')
-sigma = 1.0       # standard deviation for noise
-add_noise = True  # toggle for adding noise
 
 # Dosages
 drug1_dose = data[key_to_search].get("drug1_dose", [])
@@ -60,19 +71,6 @@ x1 = np.logspace(-4, np.ceil(np.log10(np.max(drug1_dose)) + 2), 5000)  # Log-spa
 x2 = np.logspace(-4, np.ceil(np.log10(np.max(drug2_dose)) + 2), 5000)  # Log-spaced values for x2
 
 X1, X2 = np.meshgrid(x1, x2)
-
-# Calculate intermediate variables
-def synba_2d(X1, X2):
-    A = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2) * e_0
-    B = (X1 ** h_1) * (np.exp(logC_2) ** h_2) * e_1 * e_0
-    C = (X2 ** h_2) * (np.exp(logC_1) ** h_1) * e_2 * e_0
-    D = alpha * (X1 ** h_1) * (X2 ** h_2) * e_3 * e_0
-    AA = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2)
-    BB = (X1 ** h_1) * (np.exp(logC_2) ** h_2)
-    CC = (X2 ** h_2) * (np.exp(logC_1) ** h_1)
-    DD = alpha * (X1 ** h_1) * (X2 ** h_2)
-    Y = (A + B + C + D) / (AA + BB + CC + DD)
-    return Y
 
 # Plot the slices for Drug 1
 plt.figure(figsize=(5, 5))
@@ -101,7 +99,6 @@ plt.legend(loc='upper right', frameon=True, borderaxespad=0.1, fontsize=14)
 plt.tick_params(axis='both', which='major', labelsize=14)
 plt.savefig(str(key_to_search) + '_drug2.pdf')  # png
 plt.show()
-
 
 # Plot the surface
 fig = plt.figure(figsize=(8, 8))
@@ -172,8 +169,6 @@ logC_2 = extracted_values.get('logC2_mean')
 h_1 = extracted_values.get('h1_mean')
 h_2 = extracted_values.get('h2_mean')
 alpha = extracted_values.get('alpha_mean')
-sigma = 1.0       # standard deviation for noise
-add_noise = True  # toggle for adding noise
 
 # Dosages
 drug1_dose = data[key_to_search].get("drug1_dose", [])
@@ -185,19 +180,6 @@ x1 = np.logspace(-4, np.ceil(np.log10(np.max(drug1_dose)) + 2), 5000)  # Log-spa
 x2 = np.logspace(-4, np.ceil(np.log10(np.max(drug2_dose)) + 2), 5000)  # Log-spaced values for x2
 
 X1, X2 = np.meshgrid(x1, x2)
-
-# Calculate intermediate variables
-def synba_2d(X1, X2):
-    A = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2) * e_0
-    B = (X1 ** h_1) * (np.exp(logC_2) ** h_2) * e_1 * e_0
-    C = (X2 ** h_2) * (np.exp(logC_1) ** h_1) * e_2 * e_0
-    D = alpha * (X1 ** h_1) * (X2 ** h_2) * e_3 * e_0
-    AA = (np.exp(logC_1) ** h_1) * (np.exp(logC_2) ** h_2)
-    BB = (X1 ** h_1) * (np.exp(logC_2) ** h_2)
-    CC = (X2 ** h_2) * (np.exp(logC_1) ** h_1)
-    DD = alpha * (X1 ** h_1) * (X2 ** h_2)
-    Y = (A + B + C + D) / (AA + BB + CC + DD)
-    return Y
 
 # Plot the slices for Drug 1
 plt.figure(figsize=(5, 5))
@@ -226,7 +208,6 @@ plt.legend(loc='upper right', frameon=True, borderaxespad=0.1, fontsize=14)
 plt.tick_params(axis='both', which='major', labelsize=14)
 plt.savefig(str(key_to_search) + '_drug2.pdf')  # png
 plt.show()
-
 
 # Plot the surface
 fig = plt.figure(figsize=(8, 8))
@@ -258,4 +239,3 @@ plt.clabel(contour, inline=True, fontsize=10, fmt="%.2f")
 
 plt.savefig(str(key_to_search) + '_contour_plot.pdf')
 plt.show()
-
